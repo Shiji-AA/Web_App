@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
         });
 
         if (user) {
-               res.json(user);
+               res.json({ user,message: "User Registered successfully" });
         } else {
             res.status(400).json({ message: "Invalid user data" });
         }
@@ -53,7 +53,7 @@ const loginUser=async(req,res)=>{
                return res.status(401).json({message:"invalid user"})
         }
         const token=generateToken(user._id);
-        console.log(token,"tokrng")
+        
         res.status(200).json({
             message:"login successful",
             token,
