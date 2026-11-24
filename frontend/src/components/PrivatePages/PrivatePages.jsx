@@ -6,7 +6,7 @@ function PrivatePages() {
   if (user) {
     return <Outlet />;
   } else {
-    return <Navigate to={"/login"} />;
+    return <Navigate to={"/"} />;
   }
 }
 

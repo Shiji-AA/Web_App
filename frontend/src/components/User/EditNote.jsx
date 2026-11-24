@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AxiosInstance } from "../../../api/axiosInstance";
+import { AxiosInstance } from "../../../api/AxiosInstance";
 import toast from "react-hot-toast";
 
 function EditNote() {
@@ -16,7 +16,7 @@ useEffect(()=>{
   .then((response)=>{
     if(response.data){
 const notedata=response.data.notes
-console.log(notedata,"notesDetails of a particular idddddddddddddd")
+console.log(notedata,"notesDetails of a particular id")
 setTitle(notedata.title)
 setContent(notedata.content)
     }

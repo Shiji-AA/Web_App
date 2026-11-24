@@ -3,6 +3,11 @@ import User from "../Model/userModel.js";
 import Notes from "../Model/notesModel.js";
 import generateToken from "../Utils/generateToken.js";
 import bcrypt from "bcryptjs";
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
 
 const registerUser = async (req, res) => {
@@ -66,16 +71,19 @@ const loginUser=async(req,res)=>{
         })}}
 
 
+
 const addNotes = async (req, res) => {
   const { title, content } = req.body;
-  try {  
+  try {
+    const user=req.user;
+console.log(user,"user")
     if (!title || !content) {
       return res.status(400).json({ message: "title and content are required" });
     }
     const newNote = new Notes({
       title,
       content,
-       
+      userId: req.user._id, 
     });
     await newNote.save();
     res.status(201).json({ message: "note added successfully", note: newNote });
@@ -85,10 +93,12 @@ const addNotes = async (req, res) => {
 };
 
 
+
 const getNotes=async(req,res)=>{
 try{
+const user=req.user;
+const notes = await Notes.find({ userId: user._id }).exec();
 
-const notes=await Notes.find().exec();
 res.status(200).json({notes})
 }
 catch(error){
@@ -112,12 +122,12 @@ res.status(500).json({message:"Error in fetching data"})
 const updateNote=async(req,res)=>{
     try{
         const Id=req.params.id        
-          const {title,content } = req.body;  //frontend nammal koduthuvittathu
-          const note = await Notes.findById(Id);  //ippol database il ullathu
+          const {title,content } = req.body;  
+          const note = await Notes.findById(Id);  
             if (!note) {
       return res.status(404).json({ error: "Invalid id" });
     }
-    //ipol ullathu=frontend il ninnum vannathu
+    
     note.title =title || Notes.title;
     note.content=content || Notes.content;
     await note.save();
@@ -153,4 +163,44 @@ const deleteNote=async(req,res)=>{
 
 
 
-export { registerUser ,loginUser,addNotes,getNotes,getNotesById,updateNote,deleteNote};
+const chatbot = async (req, res) => {
+  try {
+    const { message } = req.body;
+
+    if (typeof message !== "string" || !message.trim() || message.length > 2000) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid message",
+      });
+    }
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.7-flash",
+      contents: message.trim(),
+      config: {
+        systemInstruction:
+          "You are a helpful AI chatbot. " +
+          "Answer questions in simple English.",
+        maxOutputTokens: 500,
+      },
+    });
+
+    console.log(response,"response")
+
+    res.status(200).json({
+      success: true,
+      reply: response.text || "No response generated",
+    });
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate AI response",
+    });
+  }
+};
+
+
+
+export { registerUser ,loginUser,addNotes,getNotes,getNotesById,updateNote,deleteNote,chatbot};

@@ -1,26 +1,23 @@
 import { useState } from "react";
-import {useDispatch,  useSelector } from "react-redux";
-import {logout} from '../../Redux/Slices/AuthSlice'
-import { useNavigate ,Link} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../Redux/Slices/AuthSlice";
+import { useNavigate, Link } from "react-router-dom";
 
 function Navbar() {
-  const dispatch=useDispatch(); 
-   const navigate=useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const user=useSelector((state)=>state.auth.userdata);
-console.log(user,"user")
-
+  const user = useSelector((state) => state.auth.userdata);
+  console.log(user, "user");
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-
-  const handleLogout=()=>{
- dispatch(logout());
-  navigate("/login"); 
-  }
-
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <div>
@@ -65,36 +62,27 @@ console.log(user,"user")
               className="block md:inline-block text-navy hover:text-teal-400 px-3 py-3 border-b-2 border-transparent md:border-none"
             >
               Dashboard
-            </a>          
+            </a>
 
-               {/* <a
-              href="/listNotes"
-              className="block md:inline-block text-navy hover:text-teal-400 px-3 py-3 border-b-2 border-transparent md:border-none"            >
-              Notes management system
-            </a> */}
             <Link
-  to="/listNotes"
-  className="block md:inline-block text-navy hover:text-teal-400 px-3 py-3 border-b-2 border-transparent md:border-none"
->
-  Notes management system
-</Link>
+              to="/listNotes"
+              className="block md:inline-block text-navy hover:text-teal-400 px-3 py-3 border-b-2 border-transparent md:border-none"
+            >
+              Notes management system
+            </Link>
+            
           </div>
         </div>
 
-{/* Logout Button */}
-{user && (
-  <button
-    onClick={handleLogout}
-    className="hidden md:flex px-4 py-2 text-right bg-aqua text-navy font-bold hover:bg-teal-400 hover:text-black md:rounded"
-  >
-    Logout
-  </button>
-)}
-
-
-
-
-
+        {/* Logout Button */}
+        {user && (
+          <button
+            onClick={handleLogout}
+            className="hidden md:flex px-4 py-2 text-right bg-aqua text-navy font-bold hover:bg-teal-400 hover:text-black md:rounded"
+          >
+            Logout
+          </button>
+        )}
       </nav>
     </div>
   );

@@ -1,10 +1,11 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AxiosInstance } from "../../../api/axiosInstance";
+import { AxiosInstance } from "../../../api/AxiosInstance";
 import toast from "react-hot-toast";
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import Navbar from "./Navbar";
 
 function ListNotes() {
   const navigate = useNavigate();
@@ -77,7 +78,11 @@ Swal.fire({
 
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+
+    <>
+    <Navbar/>
+
+       <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
 
         <div className="flex justify-between items-center mb-6">
@@ -151,6 +156,9 @@ Swal.fire({
 
       </div>
     </div>
+    
+    </>
+ 
   );
 }
 

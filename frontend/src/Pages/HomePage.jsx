@@ -1,14 +1,17 @@
 //import React from 'react'
+import Chatbot from '../components/User/Chatbot'
+import Footer from '../components/User/Footer'
+import Hero from '../components/User/Hero'
 import Navbar from '../components/User/Navbar'
-import Hero from '../components/Hero'
-import Footer from '../components/Footer'
 
 function HomePage() {
     return (
         <div>
-            <Navbar/>
-            <Hero/>
-            <Footer/>
+       <Navbar/>
+           <Hero/> 
+           <Footer/>
+        
+            <Chatbot/>
 
 
 

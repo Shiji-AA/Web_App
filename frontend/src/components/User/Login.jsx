@@ -2,7 +2,7 @@
 import { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { AxiosInstance } from "../../../api/axiosInstance";
+import { AxiosInstance } from "../../../api/AxiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../Redux/Slices/AuthSlice";
 
@@ -15,7 +15,7 @@ export default function Login() {
 
     useEffect(()=>{
   if(user){
-    navigate("/")
+    navigate("/home")
   }
 })
 
@@ -32,11 +32,11 @@ AxiosInstance.post("/login",{email,password})
 
 .then((response)=>{
 if(response.data){
-    console.log(response.data,"reponseeeeeeeeeeeeeeeeeeee")
+    //console.log(response.data,"reponseeeeeeeeeeeeeeeeeeee")
   localStorage.setItem("token",response.data.token)
   dispatch(setUserInfo(response.data.user))
   toast.success(response.data.message); 
-  navigate("/");
+  navigate("/home");
 
 }
 })
